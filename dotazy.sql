@@ -29,3 +29,9 @@ FROM orders o
 INNER JOIN customers c ON o.customer_id = c.customer_id
 GROUP BY c.region
 ORDER BY celkovy_predaj DESC;
+
+SELECT c.customer_name, COUNT(o.order_id) AS pocet_objednavok
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name
+ORDER BY pocet_objednavok DESC;
