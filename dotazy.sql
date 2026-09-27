@@ -40,3 +40,10 @@ SELECT p.category, ROUND(AVG(o.discount), 2) AS priemerna_zlava
 FROM orders o
 INNER JOIN products p ON o.product_id = p.product_id
 GROUP BY p.category;
+
+SELECT c.customer_name, SUM(o.sales) AS celkovy_predaj
+FROM customers c
+INNER JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name
+HAVING SUM(o.sales) > 2000
+ORDER BY celkovy_predaj DESC;
