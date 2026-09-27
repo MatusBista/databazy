@@ -35,3 +35,8 @@ FROM customers c
 LEFT JOIN orders o ON c.customer_id = o.customer_id
 GROUP BY c.customer_id, c.customer_name
 ORDER BY pocet_objednavok DESC;
+
+SELECT p.category, ROUND(AVG(o.discount), 2) AS priemerna_zlava
+FROM orders o
+INNER JOIN products p ON o.product_id = p.product_id
+GROUP BY p.category;
