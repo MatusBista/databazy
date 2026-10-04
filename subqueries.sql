@@ -56,3 +56,14 @@ SELECT product_category, SUM(total_amount) AS celkovy_predaj
 FROM flourmills_sales
 GROUP BY product_category
 ORDER BY celkovy_predaj DESC;
+
+SELECT product_name,
+       total_amount,
+       (SELECT AVG(total_amount) FROM flourmills_sales) AS avg_amount
+FROM flourmills_sales;
+
+SELECT product_name,
+       total_amount,
+       (SELECT AVG(total_amount) FROM flourmills_sales) AS avg_amount
+FROM flourmills_sales
+WHERE total_amount = 9511208.41;
