@@ -40,3 +40,12 @@ EXPLAIN
 SELECT *
 FROM orders
 WHERE customer_id = 'C001';
+
+CREATE INDEX idx_orders_order_date
+ON orders (order_date);
+
+SELECT DATE_TRUNC('month', order_date)::date AS month,
+       SUM(sales)
+FROM orders
+GROUP BY DATE_TRUNC('month', order_date)
+ORDER BY month;
