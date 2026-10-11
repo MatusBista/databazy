@@ -49,3 +49,12 @@ SELECT DATE_TRUNC('month', order_date)::date AS month,
 FROM orders
 GROUP BY DATE_TRUNC('month', order_date)
 ORDER BY month;
+
+CREATE INDEX idx_orders_region_category
+ON orders (customer_id, order_date);
+
+SELECT c.customer_name, c.region, o.*
+FROM orders o
+INNER JOIN customers c ON o.customer_id = c.customer_id
+WHERE c.region = 'West'
+  AND o.order_date >= '2024-01-01';
