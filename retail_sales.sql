@@ -33,3 +33,17 @@ END;
 $$;
 
 CALL get_customer_sales('C001');
+
+CREATE OR REPLACE PROCEDURE apply_regional_discount(region_name VARCHAR, discount_rate NUMERIC)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE orders
+    SET sales = sales * (1 - discount_rate)
+    WHERE region = region_name;
+
+    RAISE NOTICE 'Zlava % bola aplikovana pre region %', discount_rate, region_name;
+END;
+$$;
+
+CALL apply_regional_discount('West', 0.10);
