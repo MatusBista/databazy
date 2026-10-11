@@ -28,3 +28,15 @@ FROM orders;
 
 SELECT *
 FROM analyst_orders;
+
+CREATE INDEX idx_orders_customer_id
+ON orders (customer_id);
+
+SELECT *
+FROM orders
+WHERE customer_id = 'C001';
+
+EXPLAIN
+SELECT *
+FROM orders
+WHERE customer_id = 'C001';
