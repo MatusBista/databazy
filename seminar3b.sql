@@ -68,3 +68,20 @@ SELECT customer_id, product_name, sale_date, total_amount
 FROM ranked_purchases
 WHERE rn = 1
 ORDER BY customer_id;
+
+WITH RECURSIVE date_range AS (
+    SELECT MIN(sale_date) AS start_date,
+           MAX(sale_date) AS end_date
+    FROM flourmills_sales
+),
+calendar AS (
+    SELECT start_date AS calendar_date
+    FROM date_range
+    UNION ALL
+    SELECT c.calendar_date + 1
+    FROM calendar c, date_range d
+    WHERE c.calendar_date < d.end_date
+)
+SELECT calendar_date
+FROM calendar
+ORDER BY calendar_date;
