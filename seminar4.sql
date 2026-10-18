@@ -345,3 +345,19 @@ SELECT month,
        ROUND((monthly_sales - prev_month_sales) / prev_month_sales * 100, 2) AS growth_percentage
 FROM with_prev
 ORDER BY month;
+
+WITH first_purchase AS (
+    SELECT customer_id,
+           DATE_TRUNC('month', MIN(order_date))::DATE AS first_month
+    FROM orders
+    GROUP BY customer_id
+)
+SELECT COUNT(*) AS returning_customers
+FROM first_purchase f
+WHERE f.first_month = DATE '2024-06-01'
+  AND EXISTS (
+      SELECT 1
+      FROM orders o
+      WHERE o.customer_id = f.customer_id
+        AND DATE_TRUNC('month', o.order_date) > f.first_month
+  );
