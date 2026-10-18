@@ -1,7 +1,6 @@
--- Active: 1790058588830@@localhost@5433@retail
+-- Active: 1790058588830@@localhost@5433@superstore
 CREATE DATABASE retail;
 
--- CSV ma datumy v tvare den.mesiac.rok (napr. 17.2.2011)
 ALTER DATABASE retail SET datestyle = 'ISO, DMY';
 
 CREATE TABLE retail_sales (
@@ -227,3 +226,21 @@ SELECT invoice_no,
 FROM ranked
 WHERE price_rank <= 5
 ORDER BY invoice_no, price_rank, stock_code;
+
+WITH numbered AS (
+    SELECT c.customer_name,
+           o.order_id,
+           o.order_date,
+           ROW_NUMBER() OVER (
+               PARTITION BY o.customer_id
+               ORDER BY o.order_date DESC
+           ) AS order_rank
+    FROM orders o
+    JOIN customers c ON c.customer_id = o.customer_id
+)
+SELECT customer_name,
+       order_id,
+       order_date
+FROM numbered
+WHERE order_rank <= 2
+ORDER BY customer_name, order_rank;
